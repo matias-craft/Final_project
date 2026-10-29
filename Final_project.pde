@@ -21,7 +21,9 @@ float car_0_hitboxX = car_0X + 10;
 float car_0_hitboxY = car_0Y + 67;
 float car_0_hitboxW = car_0W - 20;
 float car_0_hitboxL = car_0L - 135;
+
 int money_click = 1;
+
 float upgr_cost = 15;
 float upgr_1X = 623;
 float upgr_1Y = 150;
@@ -29,7 +31,16 @@ float upgr_1_norW = 250;
 float upgr_1W = upgr_1_norW;
 float upgr_1_norL = 100;
 float upgr_1L = upgr_1_norL;
+int amount_upgr_1 = 0;
 
+float upgr_2_cost = 150;
+float upgr_2X = 623;
+float upgr_2Y = 270;
+float upgr_2_norW = 250;
+float upgr_2W = upgr_2_norW;
+float upgr_2_norL = 100;
+float upgr_2L = upgr_2_norL;
+int amount_upgr_2 = 0;
 
 void setup() {
   size(875, 800);
@@ -63,15 +74,31 @@ void draw() {
     image(car_0, drawnCarX, drawnCarY, car_0W, car_0L);
     fill(0);
     textSize(30);
-    text("money: " + money, 125, 40);
+    text("money: " + money, 115, 40);
     if (mouseOverUpgr_1 ()) {
       fill(128, 184, 181);
     } else {
       fill(158, 216, 219);
     }
-    rect(upgr_1X, upgr_1Y, upgr_1W, upgr_1L);
+
+    rect(upgr_1X, upgr_1Y, upgr_1W, upgr_1L, 20);
+    if (mouseOverUpgr_2()) {
+      fill(128, 184, 181);
+    } else {
+      fill(158, 216, 219);
+    }
+    rect(upgr_2X, upgr_2Y, upgr_2W, upgr_2L, 20);
     fill(0);
     text("spark plugs: " + upgr_cost, upgr_1X + 30, upgr_1Y + 60 );
+    text("oil filter: " + upgr_2_cost, upgr_2X + 30, upgr_2Y + 60);
+    textSize(30);
+    text("upgrades", 115, 275);
+    textSize(25);
+    text("Spark plugs: " + amount_upgr_1, 100, 325);
+    text("Oil filters: " + amount_upgr_2, 100, 360);
+    text("money per click: " + money_click, 375,40);
+    textSize(45);
+    text("Shop", 700, 50);
   }
 }
 boolean mouseOvercar_0() {
@@ -86,9 +113,14 @@ boolean mouseOverUpgr_1() {
     mouseY > upgr_1Y &&
     mouseY < upgr_1Y + upgr_1L;
 }
+boolean mouseOverUpgr_2() {
+  return mouseX > upgr_2X &&
+    mouseX < upgr_2X + upgr_2W &&
+    mouseY > upgr_2Y &&
+    mouseY < upgr_2Y + upgr_2L;
+}
 void mousePressed() {
   if (mouseOvercar_0()) {
-    println("car was pressed");
     money += money_click;
   }
   if ( money >= upgr_cost) {
@@ -96,11 +128,20 @@ void mousePressed() {
       money -= upgr_cost;
       money_click += 1;
       upgr_cost += 5;
+      amount_upgr_1 += 1;
+    }
+  }
+  if (money >= upgr_2_cost) {
+    if (mouseOverUpgr_2()) {
+      money -= upgr_2_cost;
+      amount_upgr_2 += 1;
+      money_click += 5;
+      upgr_2_cost += 25;
     }
   }
 }
 void keyPressed() {
-  while (playmode == false) {
+  if (playmode == false) {
     if ( key == 32) {
       playmode = true;
     }
