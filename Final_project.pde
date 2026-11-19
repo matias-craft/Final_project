@@ -2,6 +2,7 @@
 /*
 Matias Guzman
  Final proccesing projects
+ images aare from gemini
  TO DO :
  add breif descriptionof final project here
  */
@@ -13,10 +14,13 @@ boolean Boss_fight_ready = false;
 boolean boss_fight_2 = false;
 boolean boss_fight_ready2 = false;
 boolean win_1 = false;
+boolean win_2 = false;
+boolean quest_4 = false;
 PImage car_0;
 PImage logo;
 PImage Boss_1;
-boolean debug = false;
+PImage Boss_2;
+boolean debug = true;
 boolean quest_1 = true;
 boolean quest_2 = false;
 boolean ready_upgr = false;
@@ -110,6 +114,11 @@ float Boss_fight2Y = 450;
 float Boss_fight2W = 300;
 float Boss_fight2L = 65;
 
+float Boss_fight3X = 310;
+float Boss_fight3Y = 450;
+float Boss_fight3W = 300;
+float Boss_fight3L = 65;
+
 float Race_carX = 20;
 float Race_carY = 500;
 float Race_carW = 150;
@@ -119,6 +128,16 @@ float Boss_carX = 20;
 float Boss_carY = 250;
 float Boss_carW = 150;
 float Boss_carL = 150;
+
+float Boss_carX2 = 20;
+float Boss_carY2 = 250;
+float Boss_carW2 = 200;
+float Boss_carL2 = 200;
+
+float Boss_carX3 = 20;
+float Boss_carY3 = 250;
+float Boss_carW3 = 200;
+float Boss_carL3 = 200;
 
 float page_upX = 623;
 float page_upY = 640;
@@ -135,9 +154,7 @@ void setup() {
 
   logo = loadImage("Logo.png");
   Boss_1 = loadImage("Boss_1.png");
-}
-
-void draw() {
+  Boss_2 = loadImage("Boss_2.png");
   if (debug) {
     fill(255, 0, 0);
     rect(car_0_hitboxX, car_0_hitboxY, car_0_hitboxW, car_0_hitboxL);
@@ -147,23 +164,55 @@ void draw() {
     amount_upgr_4 =+ 50;
     quest_1 = false;
     quest_2 =false;
-    quest_3 = true;
+    quest_3 = false;
     start_menu = false;
-    Boss_fight_1 = false;
-    playmode = true;
+    boss_fight_2 = true;
+    playmode = false;
     Car = "Car_1.png";
   }
+}
+
+void draw() {
+
   car_0 = loadImage(Car);
   background(233, 255, 249);
+  if (boss_fight_2) {
+    background(214, 64, 69);
+    image(car_0, Race_carX, Race_carY, Race_carW, Race_carL);
+    image(Boss_2, Boss_carX2, Boss_carY2, Boss_carW2, Boss_carL2);
+    fill(255);
+    textSize(40);
+    text("click to start race", 250, 200);
+    if (Race_start == true) {
+      Boss_carX2 += 1.3;
+    }
+    if (Boss_carX2 >= 755 && Race_carX < 755) {
+      playmode = true;
+      boss_fight_2 = false;
+      Boss_carX2 = 20;
+      Race_carX = 20;
+      Race_start = false;
+      quest_3 = true;
+    }
+    if (Race_carX >= 755 && Boss_carX2 < 755) {
+      Race_start = false;
+      win_2 = true;
+      Boss_carX = 20;
+      Race_carX = 20;
+      boss_fight_2 = false;
+      quest_4 = true;
+      Race_start = false;
+    }
+  }
   if (Boss_fight_1) {
     background(214, 64, 69);
     image(car_0, Race_carX, Race_carY, Race_carW, Race_carL);
     image(Boss_1, Boss_carX, Boss_carY, Boss_carW, Boss_carL);
     fill(255);
     textSize(40);
-
+    text("click to start race", 250, 200);
     if (Race_start == true) {
-      Boss_carX += 1.2;
+      Boss_carX += 0.9;
     }
     if (Boss_carX >= 755 && Race_carX < 755) {
       playmode = true;
@@ -171,6 +220,7 @@ void draw() {
       Boss_carX = 20;
       Race_carX = 20;
       Race_start = false;
+      quest_2 = true;
     }
     if (Race_carX >= 755 && Boss_carX < 755) {
       Race_start = false;
@@ -178,6 +228,7 @@ void draw() {
       Boss_carX = 20;
       Race_carX = 20;
       Boss_fight_1 = false;
+      quest_3 = true;
     }
   }
   if (start_menu) {
@@ -187,6 +238,13 @@ void draw() {
     text("click space to play", 275, 550);
   }
   if ( win_1 == true) {
+    background(0, 180, 0);
+    fill(255);
+    textSize(40);
+    text("YOU WON", 350, 400);
+    text("Click anywhere to continue", 250, 450);
+  }
+  if ( win_2 == true) {
     background(0, 180, 0);
     fill(255);
     textSize(40);
@@ -273,6 +331,29 @@ void draw() {
         text("Fight Boss", 390, 490);
       }
     }
+    if (quest_4) {
+      Race_start = false;
+      Boss_carX = 20;
+      fill(70, 117, 153);
+      rect(310, 100, 300, 340, 40);
+      fill(255);
+      textSize(35);
+      text("Quest 4", 405, 150);
+      textSize(20);
+      text("the CEO of the company. \n is after you to \n re gain control of the comp. \n prepare for the fight. buy \n  spark plugs: 500 \n oil filter : 200 \n turbos: 150 \n rocket boosters: 100 \n supercharger: 70 \n nitros: 50", 325, 200);
+      if (amount_upgr_1 >= 500 && amount_upgr_2 >= 200 && amount_upgr_3 >= 150 && amount_upgr_4 >= 100 && amount_upgr_5 >= 70 && amount_upgr_6 >= 50) {
+        boss_fight_ready2 = true;
+        if (mouseOverBossfight3()) {
+          fill(50, 97, 133);
+        } else {
+          fill(70, 117, 153);
+        }
+        rect(Boss_fight3X, Boss_fight3Y, Boss_fight3W, Boss_fight3L, 20);
+        fill(255);
+        textSize(25);
+        text("Fight Boss", 390, 490);
+      }
+    }
     image(car_0, drawnCarX, drawnCarY, car_0W, car_0L);
     fill(0);
     textSize(30);
@@ -335,7 +416,7 @@ void draw() {
       text("spark plugs: " + upgr_cost, upgr_1X + 30, upgr_1Y + 60 );
       text("oil filter: " + upgr_2_cost, upgr_2X + 30, upgr_2Y + 60);
     } else if (page == 2) {
-      if (quest_3) {
+      if (quest_3 || quest_4) {
         if (mouseOverUpgr_5()) {
           fill(128, 184, 181);
         } else {
@@ -361,7 +442,7 @@ void draw() {
     text("Oil filters: " + amount_upgr_2, 100, 360);
     text("Turbos: " + amount_upgr_3, 100, 395);
     text("Rocket boosters: " + amount_upgr_4, 100, 430);
-    if (quest_3) {
+    if (quest_3 || quest_4) {
       text("Superchargers: " + amount_upgr_5, 100, 465);
       text("Nitros: " + amount_upgr_6, 100, 500);
     }
@@ -420,6 +501,12 @@ boolean mouseOverBossfight2() {
     mouseY > Boss_fight2Y &&
     mouseY < Boss_fight2Y + Boss_fight2L;
 }
+boolean mouseOverBossfight3() {
+  return mouseX > Boss_fightX &&
+    mouseX < Boss_fight3X + Boss_fight3W &&
+    mouseY > Boss_fight3Y &&
+    mouseY < Boss_fight3Y + Boss_fight3L;
+}
 boolean mouseOverPageUp() {
   return mouseX > page_upX &&
     mouseX < page_upX + page_upW &&
@@ -450,6 +537,15 @@ boolean mouseOverUpgr_6() {
 void mousePressed() {
   if (mouseOvercar_0()) {
     money += money_click;
+  }
+  if (quest_3) {
+    if (boss_fight_ready2) {
+      if (mouseOverBossfight2()) {
+        playmode = false;
+        boss_fight_2 = true;
+        quest_3 = false;
+      }
+    }
   }
   if (page ==1) {
     if ( money >= upgr_cost) {
@@ -516,7 +612,13 @@ void mousePressed() {
     win_1 = false;
     playmode = true;
   }
-  if (quest_3) {
+  if ( win_2 == true) {
+    quest_4 = true;
+    quest_3 = false;
+    win_2 = false;
+    playmode = true;
+  }
+  if (quest_3 || quest_4) {
     if (mouseOverPageUp()) {
 
       page = 2;
@@ -526,6 +628,32 @@ void mousePressed() {
 
       page = 1;
     }
+    if (page == 2) {
+      if (money >= upgr_5_cost) {
+        if (mouseOverUpgr_5()) {
+          money -= upgr_5_cost;
+          amount_upgr_5 += 1;
+          money_click += 500;
+          upgr_5_cost += 2500;
+        }
+      }
+      if (money >= upgr_6_cost) {
+        if (mouseOverUpgr_6()) {
+          money -= upgr_6_cost;
+          amount_upgr_6 += 1;
+          money_click += 2000;
+          upgr_6_cost += 10000;
+        }
+      }
+    }
+  }
+  if (Boss_fight_1) {
+    Race_carX += 5;
+    Race_start = true;
+  }
+  if (boss_fight_2) {
+    Race_carX += 5;
+    Race_start = true;
   }
 }
 void keyReleased() {
@@ -533,12 +661,6 @@ void keyReleased() {
     if ( key == 32) {
       playmode = true;
       start_menu = false;
-    }
-  }
-  if (Boss_fight_1) {
-    if (key == 32) {
-      Race_carX += 5;
-      Race_start = true;
     }
   }
 }
